@@ -36,4 +36,8 @@ public class PlayerRepository {
                 .forEach(players::add);
         return players;
     }
+
+    public void remove(String id) {
+        jongo.getCollection(PLAYER_COLLECTION).remove(id);
+    }
 }
