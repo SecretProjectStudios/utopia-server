@@ -7,10 +7,18 @@ import java.util.List;
 
 @JsonSerialize
 public class GameState {
+    private String reference;
     private List<Player> players;
 
-    public GameState(List<Player> players) {
+    public GameState(String reference,
+                     List<Player> players) {
+        this.reference = reference;
         this.players = players;
+    }
+
+    @JsonProperty
+    public String getReference() {
+        return reference;
     }
 
     @JsonProperty
