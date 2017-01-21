@@ -2,7 +2,6 @@ package secretprojectstudios.resources;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
-import secretprojectstudios.ResourceUtilities;
 import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.GameState;
 import secretprojectstudios.domain.Player;
@@ -11,8 +10,7 @@ import secretprojectstudios.repository.PlayerRepository;
 import secretprojectstudios.resources.requests.GameCreateRequest;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.*;
-import java.net.URI;
+import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/games")
