@@ -38,14 +38,14 @@ public class PlayerResource {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response leaveGame(String reference, String player) {
+    public Response leaveGame(String id) {
         return Response.status(501).build();
     }
 
     @POST
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response vote(String reference, String player) {
+    public Response vote(String id) {
         return Response.status(501).build();
     }
 }
