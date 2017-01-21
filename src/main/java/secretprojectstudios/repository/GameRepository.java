@@ -23,7 +23,7 @@ public class GameRepository {
     }
 
     public Game get(String id) {
-        return jongo.getCollection(GAMES_COLLECTION).findOne("{ _id: # }", new ObjectId(id)).as(Game.class);
+        return jongo.getCollection(GAMES_COLLECTION).findOne(new ObjectId(id)).as(Game.class);
     }
 
     public Game getByReference(String reference) {

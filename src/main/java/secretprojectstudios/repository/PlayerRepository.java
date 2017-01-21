@@ -5,8 +5,10 @@ import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import secretprojectstudios.domain.Player;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 
 public class PlayerRepository {
 
@@ -30,12 +32,11 @@ public class PlayerRepository {
     }
 
     public List<Player> getAll(String reference) {
-        List<Player> players = new ArrayList<>();
-        jongo.getCollection(PLAYER_COLLECTION)
+        return stream(jongo.getCollection(PLAYER_COLLECTION)
                 .find("{ gameId: # }", reference)
                 .as(Player.class)
-                .forEach(players::add);
-        return players;
+                .spliterator(), false)
+                .collect(toList());
     }
 
     public void remove(String id) {

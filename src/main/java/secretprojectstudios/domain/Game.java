@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
@@ -18,30 +16,22 @@ public class Game {
     private String id;
     private final String reference;
     private final Map<Ideal, Integer> ideals;
-    private final List<Bill> pastBills;
-    private Bill currentBill;
+    private String currentBill;
 
     @JsonCreator
-    protected Game(
-            @MongoId String id,
-            @JsonProperty("reference") String reference,
-            @JsonProperty("ideals") Map<String, Integer> ideals,
-            @JsonProperty("pastBills") List<Bill> pastBills,
-            @JsonProperty("currentBill") Bill currentBill) {
+    protected Game(@MongoId String id,
+                   @JsonProperty("reference") String reference,
+                   @JsonProperty("ideals") Map<String, Integer> ideals,
+                   @JsonProperty("currentBill") String currentBill) {
         this.id = id;
         this.reference = reference;
-        this.ideals = ideals
-                .entrySet()
-                .stream()
-                .collect(toMap(
-                        entry -> Ideal.fromString(entry.getKey()),
-                        Map.Entry::getValue));
-        this.pastBills = pastBills;
+        this.ideals = ideals.entrySet().stream()
+                .collect(toMap(entry -> Ideal.fromString(entry.getKey()), Map.Entry::getValue));
         this.currentBill = currentBill;
     }
 
     public Game(String reference) {
-        this(null, reference, DEFAULT_IDEALS, new ArrayList<>(), null);
+        this(null, reference, DEFAULT_IDEALS, null);
     }
 
     @JsonProperty("_id")
@@ -59,14 +49,11 @@ public class Game {
         return ideals;
     }
 
-    @JsonProperty
-    public Bill getCurrentBill() { return currentBill; }
+    private void setNewBill(Bill bill) {
+        currentBill = bill.getId();
+    }
 
-    private void setNewBill(Bill bill)
-    {
-        if (currentBill != null){
-            pastBills.add(currentBill);
-        }
-        currentBill = bill;
+    public String getCurrentBill() {
+        return currentBill;
     }
 }
