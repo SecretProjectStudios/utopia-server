@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import secretprojectstudios.domain.Game;
+import secretprojectstudios.domain.State;
 
 public class GameRepository {
 
@@ -26,7 +27,13 @@ public class GameRepository {
         return jongo.getCollection(GAMES_COLLECTION).findOne(new ObjectId(id)).as(Game.class);
     }
 
-    public Game getByReference(String reference) {
-        return jongo.getCollection(GAMES_COLLECTION).findOne("{ reference: # }", reference.toUpperCase()).as(Game.class);
+    public Game getByReferenceAndState(String reference, State state) {
+        return jongo.getCollection(GAMES_COLLECTION).findOne("{ reference: #, state: # }", reference.toUpperCase(), state).as(Game.class);
+    }
+
+    public Game startGame(String id) {
+        jongo.getCollection(GAMES_COLLECTION).update(new ObjectId(id))
+                .with("{ $set: { state: # } }", State.Started);
+        return get(id);
     }
 }

@@ -15,23 +15,26 @@ public class Game {
     @MongoObjectId
     private String id;
     private final String reference;
+    private final State state;
     private final Map<Ideal, Integer> ideals;
     private String currentBill;
 
     @JsonCreator
     protected Game(@MongoId String id,
                    @JsonProperty("reference") String reference,
+                   @JsonProperty("state") State state,
                    @JsonProperty("ideals") Map<String, Integer> ideals,
                    @JsonProperty("currentBill") String currentBill) {
         this.id = id;
         this.reference = reference;
+        this.state = state;
         this.ideals = ideals.entrySet().stream()
                 .collect(toMap(entry -> Ideal.fromString(entry.getKey()), Map.Entry::getValue));
         this.currentBill = currentBill;
     }
 
     public Game(String reference) {
-        this(null, reference, DEFAULT_IDEALS, null);
+        this(null, reference, State.NotStarted, DEFAULT_IDEALS, null);
     }
 
     @JsonProperty("_id")
@@ -42,6 +45,11 @@ public class Game {
     @JsonProperty
     public String getReference() {
         return reference;
+    }
+
+    @JsonProperty
+    public State getState() {
+        return state;
     }
 
     @JsonProperty
