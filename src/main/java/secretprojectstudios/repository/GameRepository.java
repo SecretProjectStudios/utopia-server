@@ -8,7 +8,7 @@ import secretprojectstudios.domain.Game;
 public class GameRepository {
 
     private static final String GAMES_COLLECTION = "games";
-    
+
     private final Jongo jongo;
 
     @Inject
@@ -27,6 +27,6 @@ public class GameRepository {
     }
 
     public Game getByReference(String reference) {
-        return jongo.getCollection(GAMES_COLLECTION).findOne("{ reference: # }", reference).as(Game.class);
+        return jongo.getCollection(GAMES_COLLECTION).findOne("{ reference: # }", reference.toUpperCase()).as(Game.class);
     }
 }

@@ -28,7 +28,8 @@ public class GameResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Player createNewGame(GameCreateRequest request) {
-        Game game = gameRepository.save(new Game(RandomStringUtils.randomAlphabetic(6)));
+        String reference = RandomStringUtils.randomAlphabetic(6).toUpperCase();
+        Game game = gameRepository.save(new Game(reference));
         return playerRepository.add(new Player(request.getPlayerName(), game.getId()));
     }
 
