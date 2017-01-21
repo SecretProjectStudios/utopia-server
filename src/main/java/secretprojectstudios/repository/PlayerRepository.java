@@ -1,6 +1,7 @@
 package secretprojectstudios.repository;
 
 import com.google.inject.Inject;
+import org.bson.types.ObjectId;
 import org.jongo.Jongo;
 import secretprojectstudios.domain.Player;
 
@@ -25,7 +26,7 @@ public class PlayerRepository {
     }
 
     public Player get(String id) {
-        return jongo.getCollection(PLAYER_COLLECTION).findOne("{ _id: #, player: # }", id).as(Player.class);
+        return jongo.getCollection(PLAYER_COLLECTION).findOne("{ _id: # }", new ObjectId(id)).as(Player.class);
     }
 
     public List<Player> getAll(String reference) {
