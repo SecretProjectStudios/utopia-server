@@ -1,6 +1,7 @@
 package secretprojectstudios.domain;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import secretprojectstudios.resources.requests.PlayerVoteRequest;
 
 import java.util.*;
 
@@ -42,5 +43,9 @@ public class Bill {
 
     private String generateName() {
         return String.format("Bill %s.%s", randomAlphanumeric(3), randomAlphanumeric(1));
+    }
+
+    public void addVote(String id, Vote vote) {
+        votes.put(id, vote);
     }
 }

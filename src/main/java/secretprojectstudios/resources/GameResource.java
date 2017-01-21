@@ -28,23 +28,25 @@ public class GameResource {
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Player createNewGame(GameCreateRequest request) {
-        Game game = gameRepository.add(new Game(RandomStringUtils.randomAlphabetic(6)));
+        Game game = gameRepository.save(new Game(RandomStringUtils.randomAlphabetic(6)));
         return playerRepository.add(new Player(request.getPlayerName(), game.getId()));
     }
 
     @GET
-    @Path("/{reference}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public GameState getGame(@PathParam("reference") String reference) {
-        List<Player> players = playerRepository.getAll(reference);
-        return new GameState(players);
+    public GameState getGame(@PathParam("id") String id) {
+        Game game = gameRepository.get(id);
+        List<Player> players = playerRepository.getAll(id);
+        return new GameState(game.getReference(), players);
     }
 
     @PUT
     @Path("/{reference}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
     public Player joinGame(@PathParam("reference") String reference, @PathParam("playerName") String playerName) {
-        Player player = new Player(playerName, reference);
+        Game game = gameRepository.getByReference(reference);
+        Player player = new Player(playerName, game.getId());
         return playerRepository.add(player);
     }
 }
