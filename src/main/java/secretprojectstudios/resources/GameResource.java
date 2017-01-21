@@ -40,8 +40,7 @@ public class GameResource {
     public GameState getGame(@PathParam("id") String id) {
         Game game = gameRepository.get(id);
         List<Player> players = playerRepository.getAll(id);
-//        String joinQrCode = ResourceUtilities.encodeToQr(String.format("http://utopia-client.s3-website-ap-southeast-2.amazonaws.com/join/%s", game.getReference()));
-        return new GameState(game.getReference(), players, "");
+        return new GameState(game.getReference(), players);
     }
 
     @PUT

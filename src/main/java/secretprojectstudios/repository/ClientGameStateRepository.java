@@ -30,21 +30,20 @@ public class ClientGameStateRepository {
         this.playerVoteRepository = playerVoteRepository;
     }
 
-    public ClientGameState get(String playerId) {
-
-        Player player = playerRepository.get(playerId);
-        return get(player);
-    }
-
     public ClientGameState get(Player player) {
         Game game = gameRepository.get(player.getGameId());
-        Bill bill = billRepository.get(game.getCurrentBill());
-        List<PlayerVote> playerVotes = playerVoteRepository.getAll(bill.getId());
+        Bill bill = null;
+        Votes votes = null;
 
-        Map<Player, Vote> playerVotesMap = playerVotes.parallelStream()
-                .collect(toMap(v -> playerRepository.get(v.getPlayerId()), PlayerVote::getVote));
+        if (game.getCurrentBill() != null) {
+            bill = billRepository.get(game.getCurrentBill());
+            List<PlayerVote> playerVotes = playerVoteRepository.getAll(bill.getId());
 
-        Votes votes = new Votes(playerVotesMap);
+            Map<Player, Vote> playerVotesMap = playerVotes.parallelStream()
+                    .collect(toMap(v -> playerRepository.get(v.getPlayerId()), PlayerVote::getVote));
+
+            votes = new Votes(playerVotesMap);
+        }
 
         return new ClientGameState(player, game, bill, votes);
     }
