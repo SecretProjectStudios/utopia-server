@@ -6,6 +6,7 @@ import org.jongo.Jongo;
 import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.Player;
 import secretprojectstudios.repository.GameRepository;
+import secretprojectstudios.repository.PlayerRepository;
 import secretprojectstudios.resources.requests.GameCreateRequest;
 
 import javax.ws.rs.GET;
@@ -18,17 +19,19 @@ import javax.ws.rs.core.MediaType;
 public class GameResource {
 
     private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
 
     @Inject
-    public GameResource(GameRepository gameRepository) {
+    public GameResource(GameRepository gameRepository, PlayerRepository playerRepository) {
         this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Game createNewGame(GameCreateRequest request) {
         Game game = gameRepository.add(new Game(RandomStringUtils.randomAlphabetic(6)));
-        Player player = new Player(request.getRequestedName(), game.getId());
+        Player player = playerRepository.add(new Player(request.getRequestedName(), game.getId()));
         return game;
     }
 
