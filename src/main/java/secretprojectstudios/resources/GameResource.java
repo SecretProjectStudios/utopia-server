@@ -5,6 +5,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.GameState;
 import secretprojectstudios.domain.Player;
+import secretprojectstudios.domain.State;
 import secretprojectstudios.repository.GameRepository;
 import secretprojectstudios.repository.PlayerRepository;
 import secretprojectstudios.resources.requests.GameCreateRequest;
@@ -41,11 +42,20 @@ public class GameResource {
         return new GameState(game.getReference(), players);
     }
 
+    @PUT
+    @Path("/{id}/start")
+    @Produces(MediaType.APPLICATION_JSON)
+    public GameState startGame(@PathParam("id") String id) {
+        Game game = gameRepository.startGame(id);
+        List<Player> players = playerRepository.getAll(id);
+        return new GameState(game.getReference(), players);
+    }
+
     @POST
     @Path("/{reference}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
     public Player joinGame(@PathParam("reference") String reference, @PathParam("playerName") String playerName) {
-        Game game = gameRepository.getByReference(reference);
+        Game game = gameRepository.getByReferenceAndState(reference, State.NotStarted);
         Player player = new Player(playerName, game.getId());
         return playerRepository.add(player);
     }
