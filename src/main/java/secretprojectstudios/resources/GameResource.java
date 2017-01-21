@@ -2,7 +2,6 @@ package secretprojectstudios.resources;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.jongo.Jongo;
 import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.GameState;
 import secretprojectstudios.domain.Player;
@@ -38,7 +37,7 @@ public class GameResource {
     @GET
     @Path("/{reference}")
     @Produces(MediaType.APPLICATION_JSON)
-    public GameState getGame(String reference) {
+    public GameState getGame(@PathParam("reference") String reference) {
         List<Player> players = playerRepository.getAll(reference);
         return new GameState(players);
     }
@@ -46,7 +45,7 @@ public class GameResource {
     @PUT
     @Path("/{reference}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response joinGame(String reference, String player) {
+    public Response joinGame(@PathParam("reference") String reference, @PathParam("playerName") String playerName) {
         return Response.status(501).build();
     }
 }
