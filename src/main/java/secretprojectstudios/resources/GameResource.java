@@ -41,7 +41,7 @@ public class GameResource {
         return new GameState(game.getReference(), players);
     }
 
-    @PUT
+    @POST
     @Path("/{reference}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
     public Player joinGame(@PathParam("reference") String reference, @PathParam("playerName") String playerName) {
