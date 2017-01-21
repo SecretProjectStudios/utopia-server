@@ -2,9 +2,9 @@ package secretprojectstudios.repository;
 
 import com.google.inject.Inject;
 import org.jongo.Jongo;
-import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerRepository {
@@ -29,6 +29,11 @@ public class PlayerRepository {
     }
 
     public List<Player> getAll(String reference) {
-        return null;
+        List<Player> players = new ArrayList<>();
+        jongo.getCollection(PLAYER_COLLECTION)
+                .find("{ gameId: # }", reference)
+                .as(Player.class)
+                .forEach(players::add);
+        return players;
     }
 }
