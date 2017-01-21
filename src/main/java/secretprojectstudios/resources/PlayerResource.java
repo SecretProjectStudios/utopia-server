@@ -6,6 +6,7 @@ import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.Player;
 import secretprojectstudios.repository.GameRepository;
 import secretprojectstudios.repository.PlayerRepository;
+import secretprojectstudios.resources.requests.PlayerVoteRequest;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -34,12 +35,14 @@ public class PlayerResource {
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response leaveGame(@PathParam("id") String id) {
-        return Response.status(501).build();
+        playerRepository.remove(id);
+        return Response.status(200).build();
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response vote(@PathParam("id") String id) {
+    public Response vote(@PathParam("id") String id, PlayerVoteRequest vote) {
+
         return Response.status(501).build();
     }
 }

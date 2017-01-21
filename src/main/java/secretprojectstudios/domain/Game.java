@@ -15,6 +15,7 @@ public class Game {
     private String id;
     private final String reference;
     private Map<Ideal, Integer> ideals;
+    private Bill[] bills;
 
     @JsonCreator
     protected Game(
@@ -29,6 +30,11 @@ public class Game {
                 .collect(toMap(
                         entry -> Ideal.fromString(entry.getKey()),
                         Map.Entry::getValue));
+        bills = new Bill[1000];
+        for (int i = 0; i < 1000; i++)
+        {
+            bills[i] = new Bill();
+        }
     }
 
     public Game(String reference) {
