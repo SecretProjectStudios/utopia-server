@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.stream.Collectors.toMap;
@@ -15,14 +17,17 @@ public class Game {
     @MongoObjectId
     private String id;
     private final String reference;
-    private Map<Ideal, Integer> ideals;
-    private Bill[] bills;
+    private final Map<Ideal, Integer> ideals;
+    private final List<Bill> pastBills;
+    private Bill currentBill;
 
     @JsonCreator
     protected Game(
             @MongoId String id,
             @JsonProperty("reference") String reference,
-            @JsonProperty("ideals") Map<String, Integer> ideals) {
+            @JsonProperty("ideals") Map<String, Integer> ideals,
+            @JsonProperty("pastBills") List<Bill> pastBills,
+            @JsonProperty("currentBill") Bill currentBill) {
         this.id = id;
         this.reference = reference;
         this.ideals = ideals
@@ -31,15 +36,12 @@ public class Game {
                 .collect(toMap(
                         entry -> Ideal.fromString(entry.getKey()),
                         Map.Entry::getValue));
-        bills = new Bill[1000];
-        for (int i = 0; i < 1000; i++)
-        {
-            bills[i] = new Bill();
-        }
+        this.pastBills = pastBills;
+        this.currentBill = currentBill;
     }
 
     public Game(String reference) {
-        this(null, reference, DEFAULT_IDEALS);
+        this(null, reference, DEFAULT_IDEALS, new ArrayList<>(), null);
     }
 
     @JsonProperty("_id")
@@ -55,5 +57,16 @@ public class Game {
     @JsonProperty
     public Map<Ideal, Integer> getIdeals() {
         return ideals;
+    }
+
+    @JsonProperty
+    public Bill getCurrentBill() { return currentBill; }
+
+    private void setNewBill(Bill bill)
+    {
+        if (currentBill != null){
+            pastBills.add(currentBill);
+        }
+        currentBill = bill;
     }
 }

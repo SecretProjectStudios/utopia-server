@@ -16,7 +16,7 @@ public class GameRepository {
         this.jongo = jongo;
     }
 
-    public Game add(Game game) {
+    public Game save(Game game) {
         jongo.getCollection(GAMES_COLLECTION).save(game);
         return game;
     }

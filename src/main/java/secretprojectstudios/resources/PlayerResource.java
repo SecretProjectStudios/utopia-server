@@ -41,8 +41,11 @@ public class PlayerResource {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Response vote(@PathParam("id") String id, PlayerVoteRequest vote) {
-
-        return Response.status(501).build();
+    public ClientGameState vote(@PathParam("id") String id, PlayerVoteRequest vote) {
+        Player player = playerRepository.get(id);
+        Game game = gameRepository.get(player.getGameId());
+        game.getCurrentBill().addVote(id, vote.getVote());
+        gameRepository.save(game);
+        return new ClientGameState(player, game);
     }
 }
