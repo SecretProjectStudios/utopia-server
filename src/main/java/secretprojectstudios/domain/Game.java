@@ -13,16 +13,16 @@ import static java.util.stream.Collectors.toMap;
 public class Game {
     private static final Map<String, Integer> DEFAULT_IDEALS = Arrays.stream(Ideal.values()).collect(toMap(Enum::toString, ideal -> 3));
     private String id;
-    private final String code;
+    private final String reference;
     private Map<Ideal, Integer> ideals;
 
     @JsonCreator
     protected Game(
             @MongoId @MongoObjectId String id,
-            @JsonProperty("code") String code,
+            @JsonProperty("reference") String reference,
             @JsonProperty("ideals") Map<String, Integer> ideals) {
         this.id = id;
-        this.code = code;
+        this.reference = reference;
         this.ideals = ideals
                 .entrySet()
                 .stream()
@@ -31,8 +31,8 @@ public class Game {
                         Map.Entry::getValue));
     }
 
-    public Game(String code) {
-        this(null, code, DEFAULT_IDEALS);
+    public Game(String reference) {
+        this(null, reference, DEFAULT_IDEALS);
     }
 
     @JsonProperty("_id")
@@ -41,8 +41,8 @@ public class Game {
     }
 
     @JsonProperty
-    public String getCode() {
-        return code;
+    public String getReference() {
+        return reference;
     }
 
     @JsonProperty
