@@ -1,1 +1,1 @@
-web: java $JAVA_OPTS -Ddw.http.port=$PORT -Ddw.http.adminPort=$PORT -jar target/utopia-server.jar server conf/utopia.yml
+web: java $JAVA_OPTS -Ddw.server.connector.port=$PORT -jar target/utopia-server.jar server conf/utopia.yml

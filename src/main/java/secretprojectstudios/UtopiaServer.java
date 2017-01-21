@@ -3,6 +3,7 @@ package secretprojectstudios;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import secretprojectstudios.resources.IndexResource;
 import secretprojectstudios.setup.configuration.UtopiaConfiguration;
 
 public class UtopiaServer extends Application<UtopiaConfiguration> {
@@ -22,6 +23,6 @@ public class UtopiaServer extends Application<UtopiaConfiguration> {
     }
 
     public void run(UtopiaConfiguration utopiaConfiguration, Environment environment) throws Exception {
-
+        environment.jersey().register(IndexResource.class);
     }
 }
