@@ -1,8 +1,5 @@
 package secretprojectstudios.domain;
 
-import org.apache.commons.lang3.RandomStringUtils;
-import secretprojectstudios.resources.requests.PlayerVoteRequest;
-
 import java.util.*;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;

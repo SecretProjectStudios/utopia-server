@@ -9,11 +9,14 @@ import java.util.List;
 public class GameState {
     private String reference;
     private List<Player> players;
+    private String joinQrCode;
 
     public GameState(String reference,
-                     List<Player> players) {
+                     List<Player> players,
+                     String joinQrCode) {
         this.reference = reference;
         this.players = players;
+        this.joinQrCode = joinQrCode;
     }
 
     @JsonProperty
@@ -24,5 +27,10 @@ public class GameState {
     @JsonProperty
     public List<Player> getPlayers() {
         return players;
+    }
+
+    @JsonProperty
+    public String getJoinQrCode() {
+        return joinQrCode;
     }
 }

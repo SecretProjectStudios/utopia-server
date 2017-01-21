@@ -2,6 +2,7 @@ package secretprojectstudios.resources;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
+import secretprojectstudios.ResourceUtilities;
 import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.GameState;
 import secretprojectstudios.domain.Player;
@@ -10,12 +11,12 @@ import secretprojectstudios.repository.PlayerRepository;
 import secretprojectstudios.resources.requests.GameCreateRequest;
 
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.*;
+import java.net.URI;
 import java.util.List;
 
 @Path("/games")
 public class GameResource {
-
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
 
@@ -39,7 +40,7 @@ public class GameResource {
     public GameState getGame(@PathParam("id") String id) {
         Game game = gameRepository.get(id);
         List<Player> players = playerRepository.getAll(id);
-        return new GameState(game.getReference(), players);
+        return new GameState(game.getReference(), players, ResourceUtilities.encodeToQr(String.format("http://utopia-client.s3-website-ap-southeast-2.amazonaws.com/join/%s", game.getReference())));
     }
 
     @PUT
