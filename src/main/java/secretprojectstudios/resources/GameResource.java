@@ -9,11 +9,9 @@ import secretprojectstudios.repository.GameRepository;
 import secretprojectstudios.repository.PlayerRepository;
 import secretprojectstudios.resources.requests.GameCreateRequest;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/games")
 public class GameResource {
@@ -36,9 +34,37 @@ public class GameResource {
     }
 
     @GET
-    @Path("/{code}")
+    @Path("/{reference}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Game getGame(String code) {
-        return gameRepository.get(code);
+    public Game getGame(String reference) {
+        return gameRepository.get(reference);
+    }
+
+    @GET
+    @Path("/{reference}/{player}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getClientGameStateForPlayer(String reference, String player) {
+        return Response.status(501).build();
+    }
+
+    @PUT
+    @Path("/{reference}/{player}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response joinGame(String reference, String player) {
+        return Response.status(501).build();
+    }
+
+    @DELETE
+    @Path("/{reference}/{player}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response leaveGame(String reference, String player) {
+        return Response.status(501).build();
+    }
+
+    @POST
+    @Path("/{reference}/{player}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response vote(String reference, String player) {
+        return Response.status(501).build();
     }
 }
