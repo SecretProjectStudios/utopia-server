@@ -5,3 +5,6 @@ server:
   connector:
     type: http
     port: 8080
+
+database:
+  host: mongodb://localhost:27017/utopia
