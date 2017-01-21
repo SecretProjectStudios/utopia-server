@@ -4,17 +4,14 @@ import org.apache.commons.lang3.StringUtils;
 
 public enum Ideal {
     Unknown,
-    Health,
     Education,
     Economy,
     Military,
-    Police,
-    Science,
-    Infrastructure,
+    Freedom,
+    Technology,
     Religion,
-    Entertainment,
     Environment,
-    Food;
+    Diversity;
 
     public static Ideal fromString(String source) {
         String clean = StringUtils.trimToNull(source);
