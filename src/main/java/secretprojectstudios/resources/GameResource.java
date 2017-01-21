@@ -25,11 +25,11 @@ public class GameResource {
         this.playerRepository = playerRepository;
     }
 
-    @POST
+    @PUT
     @Produces(MediaType.APPLICATION_JSON)
     public Player createNewGame(GameCreateRequest request) {
         Game game = gameRepository.add(new Game(RandomStringUtils.randomAlphabetic(6)));
-        return playerRepository.add(new Player(request.getRequestedName(), game.getId()));
+        return playerRepository.add(new Player(request.getPlayerName(), game.getId()));
     }
 
     @GET

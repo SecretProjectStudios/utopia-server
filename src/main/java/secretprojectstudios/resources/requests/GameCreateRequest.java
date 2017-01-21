@@ -1,13 +1,13 @@
 package secretprojectstudios.resources.requests;
 
 public class GameCreateRequest {
-    private String requestedName;
+    private String playerName;
 
-    public GameCreateRequest(String requestedName) {
-        this.requestedName = requestedName;
+    public GameCreateRequest(String playerName) {
+        this.playerName = playerName;
     }
 
-    public String getRequestedName() {
-        return requestedName;
+    public String getPlayerName() {
+        return playerName;
     }
 }
