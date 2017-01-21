@@ -11,7 +11,6 @@ import secretprojectstudios.resources.requests.GameCreateRequest;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/games")
@@ -28,10 +27,9 @@ public class GameResource {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    public Game createNewGame(GameCreateRequest request) {
+    public Player createNewGame(GameCreateRequest request) {
         Game game = gameRepository.add(new Game(RandomStringUtils.randomAlphabetic(6)));
-        Player player = playerRepository.add(new Player(request.getRequestedName(), game.getId()));
-        return game;
+        return playerRepository.add(new Player(request.getRequestedName(), game.getId()));
     }
 
     @GET
@@ -45,7 +43,8 @@ public class GameResource {
     @PUT
     @Path("/{reference}/{playerName}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response joinGame(@PathParam("reference") String reference, @PathParam("playerName") String playerName) {
-        return Response.status(501).build();
+    public Player joinGame(@PathParam("reference") String reference, @PathParam("playerName") String playerName) {
+        Player player = new Player(playerName, reference);
+        return playerRepository.add(player);
     }
 }
