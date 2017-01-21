@@ -12,14 +12,19 @@ public class Player {
 
     private String name;
 
+    private String gameId;
+
     @JsonCreator
-    protected Player(@MongoId @MongoObjectId String id, @JsonProperty("name") String name) {
+    protected Player(@MongoId @MongoObjectId String id,
+                     @JsonProperty("name") String name,
+                     @JsonProperty("gameId") String gameId) {
         this.id = id;
         this.name = name;
+        this.gameId = gameId;
     }
 
-    public Player(String name) {
-        this(null, name);
+    public Player(String name, String gameId) {
+        this(null, name, gameId);
     }
 
     @JsonProperty("_id")
@@ -30,5 +35,10 @@ public class Player {
     @JsonProperty
     public String getName() {
         return name;
+    }
+
+    @JsonProperty
+    public String getGameId() {
+        return gameId;
     }
 }
