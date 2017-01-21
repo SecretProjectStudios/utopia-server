@@ -1,0 +1,50 @@
+package secretprojectstudios.resources;
+
+import com.google.inject.Inject;
+import org.apache.commons.lang3.RandomStringUtils;
+import secretprojectstudios.domain.Game;
+import secretprojectstudios.domain.GameState;
+import secretprojectstudios.domain.Player;
+import secretprojectstudios.repository.GameRepository;
+import secretprojectstudios.repository.PlayerRepository;
+import secretprojectstudios.resources.requests.GameCreateRequest;
+
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import java.util.List;
+
+@Path("/games")
+public class GameResource {
+
+    private final GameRepository gameRepository;
+    private final PlayerRepository playerRepository;
+
+    @Inject
+    public GameResource(GameRepository gameRepository, PlayerRepository playerRepository) {
+        this.gameRepository = gameRepository;
+        this.playerRepository = playerRepository;
+    }
+
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Player createNewGame(GameCreateRequest request) {
+        Game game = gameRepository.add(new Game(RandomStringUtils.randomAlphabetic(6)));
+        return playerRepository.add(new Player(request.getPlayerName(), game.getId()));
+    }
+
+    @GET
+    @Path("/{reference}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public GameState getGame(@PathParam("reference") String reference) {
+        List<Player> players = playerRepository.getAll(reference);
+        return new GameState(players);
+    }
+
+    @PUT
+    @Path("/{reference}/{playerName}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Player joinGame(@PathParam("reference") String reference, @PathParam("playerName") String playerName) {
+        Player player = new Player(playerName, reference);
+        return playerRepository.add(player);
+    }
+}
