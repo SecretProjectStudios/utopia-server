@@ -37,7 +37,8 @@ public class UtopiaServer extends Application<UtopiaConfiguration> {
     public void run(UtopiaConfiguration utopiaConfiguration, Environment environment) throws Exception {
         final FilterRegistration.Dynamic cors =
                 environment.servlets().addFilter("CORS", CrossOriginFilter.class);
-        cors.setInitParameter("allowedOrigins", "http://utopia-client.s3-website-ap-southeast-2.amazonaws.com");
+//        cors.setInitParameter("allowedOrigins", "http://utopia-client.s3-website-ap-southeast-2.amazonaws.com,http://localhost");
+        cors.setInitParameter("allowedOrigins", "*");
         cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
         cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
 
