@@ -2,7 +2,7 @@ package secretprojectstudios.resources;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.jongo.Jongo;
+import secretprojectstudios.domain.ClientGameState;
 import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.GameState;
 import secretprojectstudios.domain.Player;
@@ -15,38 +15,37 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 
-@Path("/games")
-public class GameResource {
+@Path("/players")
+public class PlayerResource {
 
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
 
     @Inject
-    public GameResource(GameRepository gameRepository, PlayerRepository playerRepository) {
+    public PlayerResource(GameRepository gameRepository, PlayerRepository playerRepository) {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
     }
 
-    @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    public Game createNewGame(GameCreateRequest request) {
-        Game game = gameRepository.add(new Game(RandomStringUtils.randomAlphabetic(6)));
-        Player player = playerRepository.add(new Player(request.getRequestedName(), game.getId()));
-        return game;
-    }
-
     @GET
-    @Path("/{reference}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public GameState getGame(String reference) {
-        List<Player> players = playerRepository.getAll(reference);
-        return new GameState(players);
+    public ClientGameState getPlayer(String id) {
+        Player player = playerRepository.get(id);
+        Game game = gameRepository.get(player.getGameId());
+        return new ClientGameState(player, game);
+    }
+    @DELETE
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response leaveGame(String reference, String player) {
+        return Response.status(501).build();
     }
 
-    @PUT
-    @Path("/{reference}/{playerName}")
+    @POST
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response joinGame(String reference, String player) {
+    public Response vote(String reference, String player) {
         return Response.status(501).build();
     }
 }

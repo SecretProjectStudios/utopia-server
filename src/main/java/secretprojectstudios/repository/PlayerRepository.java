@@ -5,6 +5,8 @@ import org.jongo.Jongo;
 import secretprojectstudios.domain.Game;
 import secretprojectstudios.domain.Player;
 
+import java.util.List;
+
 public class PlayerRepository {
 
     private static final String PLAYER_COLLECTION = "players";
@@ -23,6 +25,10 @@ public class PlayerRepository {
     }
 
     public Player get(String id) {
-        return jongo.getCollection(PLAYER_COLLECTION).findOne("{ _id: # }", id).as(Player.class);
+        return jongo.getCollection(PLAYER_COLLECTION).findOne("{ _id: #, player: # }", id).as(Player.class);
+    }
+
+    public List<Player> getAll(String reference) {
+        return null;
     }
 }
