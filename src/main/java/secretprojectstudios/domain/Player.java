@@ -15,7 +15,7 @@ public class Player {
 
     private String gameId;
 
-    private Map<Ideal, Integer> playerScore;
+    private Map<Ideal, Integer> playerTarget;
 
     @JsonCreator
     protected Player(@MongoId @MongoObjectId String id,
