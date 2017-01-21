@@ -1,14 +1,23 @@
 package secretprojectstudios.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.jongo.marshall.jackson.oid.MongoId;
+import org.jongo.marshall.jackson.oid.MongoObjectId;
+
 import java.util.*;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 public class Bill {
+    @MongoObjectId
+    @MongoId
+    private String id;
+    @JsonProperty
     private String text;
+    @JsonProperty
     private Map<Ideal, Integer> passEffect;
+    @JsonProperty
     private Map<Ideal, Integer> failEffect;
-    private Map<String, Vote> votes;
 
     public Bill() {
         text = generateName();
@@ -25,9 +34,8 @@ public class Bill {
         failEffect.put(ideals.get(5), randomValue(random));
     }
 
-    public void setVotes(String id, Vote vote)
-    {
-        votes.put(id, vote);
+    public String getId() {
+        return id;
     }
 
     private int randomValue(Random random) {
@@ -40,9 +48,5 @@ public class Bill {
 
     private String generateName() {
         return String.format("Bill %s.%s", randomAlphanumeric(3), randomAlphanumeric(1));
-    }
-
-    public void addVote(String id, Vote vote) {
-        votes.put(id, vote);
     }
 }

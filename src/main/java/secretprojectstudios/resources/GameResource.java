@@ -26,7 +26,7 @@ public class GameResource {
         this.playerRepository = playerRepository;
     }
 
-    @PUT
+    @POST
     @Produces(MediaType.APPLICATION_JSON)
     public Player createNewGame(GameCreateRequest request) {
         String reference = RandomStringUtils.randomAlphabetic(6).toUpperCase();
