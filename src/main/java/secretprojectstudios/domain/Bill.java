@@ -21,17 +21,51 @@ public class Bill {
 
     public Bill() {
         text = generateName();
+        generatePassAndFailOutcomes();
+    }
+
+    private void generatePassAndFailOutcomes() {
         List<Ideal> ideals = Arrays.asList(Ideal.values());
         Collections.shuffle(ideals);
         Random random = new Random();
         passEffect = new HashMap<>();
         failEffect = new HashMap<>();
-        passEffect.put(ideals.get(0), random.nextInt(4));
-        passEffect.put(ideals.get(1), random.nextInt(2) - 2);
-        passEffect.put(ideals.get(2), randomValue(random));
-        failEffect.put(ideals.get(3), random.nextInt(4));
-        failEffect.put(ideals.get(4), random.nextInt(2) - 2);
-        failEffect.put(ideals.get(5), randomValue(random));
+        int [] weights = new int[] {
+                random.nextInt(4),
+                random.nextInt(2) - 2,
+                randomValue(random),
+                random.nextInt(4),
+                random.nextInt(2) - 2,
+                randomValue(random)
+        };
+        if (random.nextFloat() < 0.25f) {
+            int from = random.nextInt(3);
+            int to = random.nextInt(3) + 3;
+            ideals.set(to, ideals.get(from));
+            weights[to] = weights[from] * -1 + random.nextInt(2) - 1;
+        } else if (random.nextFloat() < 0.33f) {
+            int from = random.nextInt(3);
+            int to = random.nextInt(3) + 3;
+            ideals.set(to, ideals.get(from));
+            weights[to] = weights[from] * -1 + random.nextInt(2) - 1;
+        }
+        if (random.nextFloat() < 0.1f) {
+            int from = random.nextInt(3);
+            int to = random.nextInt(3) + 3;
+            ideals.set(to, ideals.get(from));
+            weights[to] = weights[from] * -1 + random.nextInt(2) - 1;
+        } else if (random.nextFloat() < 0.1f) {
+            int from = random.nextInt(3);
+            int to = random.nextInt(3) + 3;
+            ideals.set(to, ideals.get(from));
+            weights[to] = weights[from] * -1 + random.nextInt(2) - 1;
+        }
+        for (int i = 0; i < 3; i++) {
+            if (weights[i] != 0)
+                passEffect.put(ideals.get(i), weights[i]);
+            if (weights[i] != 0)
+                failEffect.put(ideals.get(i+3), weights[i+3]);
+        }
     }
 
     public String getId() {
