@@ -8,6 +8,7 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 import java.util.Map;
 
 public class Player {
+    @MongoObjectId
     private String id;
 
     private String name;
@@ -17,7 +18,7 @@ public class Player {
     private Map<Ideal, Integer> targets;
 
     @JsonCreator
-    protected Player(@MongoId @MongoObjectId String id,
+    protected Player(@MongoId String id,
                      @JsonProperty("name") String name,
                      @JsonProperty("gameId") String gameId) {
         this.id = id;

@@ -12,6 +12,7 @@ import static java.util.stream.Collectors.toMap;
 
 public class Game {
     private static final Map<String, Integer> DEFAULT_IDEALS = Arrays.stream(Ideal.values()).collect(toMap(Enum::toString, ideal -> 3));
+    @MongoObjectId
     private String id;
     private final String reference;
     private Map<Ideal, Integer> ideals;
@@ -19,7 +20,7 @@ public class Game {
 
     @JsonCreator
     protected Game(
-            @MongoId @MongoObjectId String id,
+            @MongoId String id,
             @JsonProperty("reference") String reference,
             @JsonProperty("ideals") Map<String, Integer> ideals) {
         this.id = id;
