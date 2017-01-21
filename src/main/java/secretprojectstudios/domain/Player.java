@@ -6,7 +6,6 @@ import org.jongo.marshall.jackson.oid.MongoId;
 import org.jongo.marshall.jackson.oid.MongoObjectId;
 
 import java.util.Map;
-import java.util.UUID;
 
 public class Player {
     private String id;
@@ -15,7 +14,7 @@ public class Player {
 
     private String gameId;
 
-    private Map<Ideal, Integer> playerTarget;
+    private Map<Ideal, Integer> targets;
 
     @JsonCreator
     protected Player(@MongoId @MongoObjectId String id,
@@ -43,5 +42,14 @@ public class Player {
     @JsonProperty
     public String getGameId() {
         return gameId;
+    }
+
+    public boolean hasWon(Map<Ideal, Integer> ideals) {
+        for (Ideal ideal: Ideal.values()) {
+            if (targets.get(ideal) < ideals.get(ideal)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
