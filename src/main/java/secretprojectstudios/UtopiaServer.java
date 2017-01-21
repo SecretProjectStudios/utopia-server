@@ -1,10 +1,11 @@
 package secretprojectstudios;
 
+import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import secretprojectstudios.resources.IndexResource;
 import secretprojectstudios.setup.configuration.UtopiaConfiguration;
+import secretprojectstudios.setup.module.ServiceModule;
 
 public class UtopiaServer extends Application<UtopiaConfiguration> {
 
@@ -19,10 +20,15 @@ public class UtopiaServer extends Application<UtopiaConfiguration> {
 
     @Override
     public void initialize(Bootstrap<UtopiaConfiguration> bootstrap) {
+        GuiceBundle<UtopiaConfiguration> guiceBundle = GuiceBundle.<UtopiaConfiguration>newBuilder()
+                .addModule(new ServiceModule())
+                .enableAutoConfig(getClass().getPackage().getName())
+                .setConfigClass(UtopiaConfiguration.class)
+                .build();
 
+        bootstrap.addBundle(guiceBundle);
     }
 
     public void run(UtopiaConfiguration utopiaConfiguration, Environment environment) throws Exception {
-        environment.jersey().register(IndexResource.class);
     }
 }
