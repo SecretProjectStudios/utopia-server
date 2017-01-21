@@ -7,4 +7,4 @@ server:
     port: 8080
 
 database:
-  host: mongodb://localhost:27017/utopia
+  host: mongodb://utopia:g4mej4m@ds117899.mlab.com:17899/heroku_lzjq53hl

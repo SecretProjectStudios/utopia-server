@@ -4,8 +4,13 @@ import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import secretprojectstudios.setup.configuration.UtopiaConfiguration;
 import secretprojectstudios.setup.module.ServiceModule;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
+import java.util.EnumSet;
 
 public class UtopiaServer extends Application<UtopiaConfiguration> {
 
@@ -30,5 +35,12 @@ public class UtopiaServer extends Application<UtopiaConfiguration> {
     }
 
     public void run(UtopiaConfiguration utopiaConfiguration, Environment environment) throws Exception {
+        final FilterRegistration.Dynamic cors =
+                environment.servlets().addFilter("CORS", CrossOriginFilter.class);
+        cors.setInitParameter("allowedOrigins", "http://utopia-client.s3-website-ap-southeast-2.amazonaws.com");
+        cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
+        cors.setInitParameter("allowedMethods", "OPTIONS,GET,PUT,POST,DELETE,HEAD");
+
+        cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
     }
 }
