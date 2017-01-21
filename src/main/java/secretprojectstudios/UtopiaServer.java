@@ -1,5 +1,6 @@
 package secretprojectstudios;
 
+import com.google.inject.Stage;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -29,7 +30,7 @@ public class UtopiaServer extends Application<UtopiaConfiguration> {
                 .addModule(new ServiceModule())
                 .enableAutoConfig(getClass().getPackage().getName())
                 .setConfigClass(UtopiaConfiguration.class)
-                .build();
+                .build(Stage.DEVELOPMENT);
 
         bootstrap.addBundle(guiceBundle);
     }
