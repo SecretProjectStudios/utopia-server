@@ -22,7 +22,7 @@ public class PlayerRepository {
         return player;
     }
 
-    public Game get(String code) {
-        return jongo.getCollection(PLAYER_COLLECTION).findOne("{ code: # }", code).as(Game.class);
+    public Player get(String id) {
+        return jongo.getCollection(PLAYER_COLLECTION).findOne("{ _id: # }", id).as(Player.class);
     }
 }
