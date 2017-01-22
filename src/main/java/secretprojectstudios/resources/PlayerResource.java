@@ -56,6 +56,7 @@ public class PlayerResource {
         Bill bill = billRepository.get(game.getCurrentBill());
         PlayerVote playerVote = new PlayerVote(bill.getId(), id, vote.getVote());
         playerVoteRepository.add(playerVote);
-        return clientGameStateRepository.get(player);
+        ClientGameState clientGameState = clientGameStateRepository.get(player);
+        return clientGameState;
     }
 }

@@ -2,13 +2,10 @@ package secretprojectstudios.repository;
 
 import com.google.inject.Inject;
 import secretprojectstudios.domain.*;
-import secretprojectstudios.repository.BillRepository;
-import secretprojectstudios.repository.GameRepository;
-import secretprojectstudios.repository.PlayerRepository;
-import secretprojectstudios.repository.PlayerVoteRepository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -32,6 +29,7 @@ public class ClientGameStateRepository {
 
     public ClientGameState get(Player player) {
         Game game = gameRepository.get(player.getGameId());
+        List<Player> allPlayers = playerRepository.getAll(player.getGameId());
         Bill bill = null;
         Votes votes = null;
 
@@ -45,6 +43,11 @@ public class ClientGameStateRepository {
             votes = new Votes(playerVotesMap);
         }
 
-        return new ClientGameState(player, game, bill, votes);
+
+        final Votes finalVotes = votes;
+        List<SimplePlayer> simplePlayers = allPlayers.stream()
+                .map(p -> new SimplePlayer(p.getId(), p.getName(), finalVotes != null && finalVotes.hasVoted(p)))
+                .collect(Collectors.toList());
+        return new ClientGameState(player, simplePlayers, game, bill, votes);
     }
 }

@@ -31,9 +31,9 @@ public class PlayerRepository {
         return jongo.getCollection(PLAYER_COLLECTION).findOne("{ _id: # }", new ObjectId(id)).as(Player.class);
     }
 
-    public List<Player> getAll(String reference) {
+    public List<Player> getAll(String id) {
         return stream(jongo.getCollection(PLAYER_COLLECTION)
-                .find("{ gameId: # }", reference)
+                .find("{ gameId: # }", id)
                 .as(Player.class)
                 .spliterator(), false)
                 .collect(toList());

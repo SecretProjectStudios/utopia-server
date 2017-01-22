@@ -46,6 +46,11 @@ public class Player {
         return gameId;
     }
 
+    @JsonProperty
+    public Map<Ideal, Integer> getTargets() {
+        return targets;
+    }
+
     public boolean hasWon(Map<Ideal, Integer> ideals) {
         for (Ideal ideal: Ideal.values()) {
             if (targets.get(ideal) < ideals.get(ideal)) {

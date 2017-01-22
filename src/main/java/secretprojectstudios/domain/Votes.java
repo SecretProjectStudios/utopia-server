@@ -18,6 +18,10 @@ public class Votes {
         this.players = playerVotes;
         this.counts = stream(Vote.values()).collect(toMap(identity(), v -> 0));
 
-        playerVotes.values().stream().forEach(v -> counts.put(v, counts.get(v) + 1));
+        playerVotes.values().forEach(v -> counts.put(v, counts.get(v) + 1));
+    }
+
+    public boolean hasVoted(Player player) {
+        return players.containsKey(player);
     }
 }
