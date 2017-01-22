@@ -85,7 +85,7 @@ public class Game {
         Map<Ideal, Integer> effect = vote == Vote.Aye ? bill.getPassEffect() : bill.getFailEffect();
 
         for (Map.Entry<Ideal, Integer> entry : effect.entrySet()) {
-            ideals.compute(entry.getKey(), (ideal, value) -> value + entry.getValue());
+            ideals.compute(entry.getKey(), (ideal, value) -> Math.max(0, Math.min(value + entry.getValue(), 10)));
         }
     }
 }
