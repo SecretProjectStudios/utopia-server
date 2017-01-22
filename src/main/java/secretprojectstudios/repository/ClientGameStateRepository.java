@@ -4,10 +4,7 @@ import com.google.inject.Inject;
 import secretprojectstudios.domain.*;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toMap;
 
 public class ClientGameStateRepository {
 
@@ -31,23 +28,29 @@ public class ClientGameStateRepository {
         Game game = gameRepository.get(player.getGameId());
         List<Player> allPlayers = playerRepository.getAll(player.getGameId());
         Bill bill = null;
-        Votes votes = null;
+        List<PlayerVote> playerVotes = null;
 
         if (game.getCurrentBill() != null) {
             bill = billRepository.get(game.getCurrentBill());
-            List<PlayerVote> playerVotes = playerVoteRepository.getAll(bill.getId());
+            playerVotes = playerVoteRepository.getAll(bill.getId());
 
-            Map<Player, Vote> playerVotesMap = playerVotes.parallelStream()
-                    .collect(toMap(v -> playerRepository.get(v.getPlayerId()), PlayerVote::getVote));
-
-            votes = new Votes(playerVotesMap);
+            if (allPlayers.size() == playerVotes.size() && gameRepository.endRound(game)) {
+                bill = new Bill();
+                billRepository.save(bill);
+                game.setNewBill(bill);
+                gameRepository.save(game);
+                playerVotes = null;
+            }
         }
 
 
-        final Votes finalVotes = votes;
+        final List<PlayerVote> finalVotes = playerVotes;
         List<SimplePlayer> simplePlayers = allPlayers.stream()
-                .map(p -> new SimplePlayer(p.getId(), p.getName(), finalVotes != null && finalVotes.hasVoted(p)))
+                .map(p -> {
+                    boolean voted = finalVotes != null && finalVotes.stream().anyMatch(v -> v.getPlayerId().equals(p.getId()));
+                    return new SimplePlayer(p.getId(), p.getName(), voted);
+                })
                 .collect(Collectors.toList());
-        return new ClientGameState(player, simplePlayers, game, bill, votes);
+        return new ClientGameState(player, simplePlayers, game, bill);
     }
 }

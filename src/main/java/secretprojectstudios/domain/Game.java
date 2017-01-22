@@ -13,28 +13,31 @@ import static java.util.stream.Collectors.toMap;
 public class Game {
     private static final Map<String, Integer> DEFAULT_IDEALS = Arrays.stream(Ideal.values()).collect(toMap(Enum::toString, ideal -> 3));
     @MongoObjectId
-    private String id;
+        private String id;
     private final String reference;
-    private final State state;
+    private State state;
     private final Map<Ideal, Integer> ideals;
     private String currentBill;
+    private int round;
 
     @JsonCreator
     protected Game(@MongoId String id,
                    @JsonProperty("reference") String reference,
                    @JsonProperty("state") State state,
                    @JsonProperty("ideals") Map<String, Integer> ideals,
-                   @JsonProperty("currentBill") String currentBill) {
+                   @JsonProperty("currentBill") String currentBill,
+                   @JsonProperty("round") int round) {
         this.id = id;
         this.reference = reference;
         this.state = state;
         this.ideals = ideals.entrySet().stream()
                 .collect(toMap(entry -> Ideal.fromString(entry.getKey()), Map.Entry::getValue));
         this.currentBill = currentBill;
+        this.round = round;
     }
 
     public Game(String reference) {
-        this(null, reference, State.NotStarted, DEFAULT_IDEALS, null);
+        this(null, reference, State.NotStarted, DEFAULT_IDEALS, null, 0);
     }
 
     @JsonProperty("_id")
@@ -57,11 +60,24 @@ public class Game {
         return ideals;
     }
 
-    private void setNewBill(Bill bill) {
+    @JsonProperty
+    public int getRound() {
+        return round;
+    }
+
+    public void nextRound() {
+        round++;
+    }
+
+    public void setNewBill(Bill bill) {
         currentBill = bill.getId();
     }
 
     public String getCurrentBill() {
         return currentBill;
+    }
+
+    public void start() {
+        state = State.Started;
     }
 }

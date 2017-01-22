@@ -9,7 +9,7 @@ public enum Ideal {
     Military,
     Freedom,
     Technology,
-    Religion,
+    Spirituality,
     Environment,
     Diversity;
 
