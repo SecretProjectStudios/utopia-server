@@ -36,4 +36,13 @@ public class GameRepository {
                 .with("{ $set: { state: # } }", State.Started);
         return get(id);
     }
+
+    public boolean endRound(Game game) {
+        int n = jongo.getCollection(GAMES_COLLECTION)
+                .update("{ _id: #, round: # }", game.getId(), game.getRound())
+                .with("{ $inc: { round: 1 } }")
+                .getN();
+        game.nextRound();
+        return n > 0;
+    }
 }

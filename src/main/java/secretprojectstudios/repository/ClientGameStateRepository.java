@@ -41,6 +41,13 @@ public class ClientGameStateRepository {
                     .collect(toMap(v -> playerRepository.get(v.getPlayerId()), PlayerVote::getVote));
 
             votes = new Votes(playerVotesMap);
+
+            if (allPlayers.size() == votes.getCount() && gameRepository.endRound(game)) {
+                bill = new Bill();
+                billRepository.save(bill);
+                game.setNewBill(bill);
+                gameRepository.save(game);
+            }
         }
 
 

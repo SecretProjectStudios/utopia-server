@@ -24,4 +24,8 @@ public class Votes {
     public boolean hasVoted(Player player) {
         return players.containsKey(player);
     }
+
+    public int getCount() {
+        return players.size();
+    }
 }
