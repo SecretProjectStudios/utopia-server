@@ -12,9 +12,9 @@ public class Votes {
     @JsonProperty
     private final Map<Vote, Integer> counts;
     @JsonProperty
-    private final Map<Player, Vote> players;
+    private final Map<String, Vote> players;
 
-    public Votes(Map<Player, Vote> playerVotes) {
+    public Votes(Map<String, Vote> playerVotes) {
         this.players = playerVotes;
         this.counts = stream(Vote.values()).collect(toMap(identity(), v -> 0));
 
@@ -22,7 +22,7 @@ public class Votes {
     }
 
     public boolean hasVoted(Player player) {
-        return players.containsKey(player);
+        return players.containsKey(player.getId());
     }
 
     public int getCount() {

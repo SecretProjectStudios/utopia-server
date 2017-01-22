@@ -11,14 +11,12 @@ public class ClientGameState {
     private Player player;
     private List<SimplePlayer> players;
     private Bill bill;
-    private Votes votes;
 
-    public ClientGameState(Player player, List<SimplePlayer> players, Game game, Bill bill, Votes votes) {
+    public ClientGameState(Player player, List<SimplePlayer> players, Game game, Bill bill) {
         this.player = player;
         this.players = players;
         this.game = game;
         this.bill = bill;
-        this.votes = votes;
     }
 
     @JsonProperty
@@ -39,10 +37,5 @@ public class ClientGameState {
     @JsonProperty
     public Bill getBill() {
         return bill;
-    }
-
-    @JsonProperty
-    public Votes getVotes() {
-        return votes;
     }
 }

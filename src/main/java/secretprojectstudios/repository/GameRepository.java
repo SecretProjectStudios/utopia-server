@@ -33,7 +33,7 @@ public class GameRepository {
 
     public boolean endRound(Game game) {
         int n = jongo.getCollection(GAMES_COLLECTION)
-                .update("{ _id: #, round: # }", game.getId(), game.getRound())
+                .update("{ _id: #, round: # }", new ObjectId(game.getId()), game.getRound())
                 .with("{ $inc: { round: 1 } }")
                 .getN();
         game.nextRound();

@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toMap;
 public class Game {
     private static final Map<String, Integer> DEFAULT_IDEALS = Arrays.stream(Ideal.values()).collect(toMap(Enum::toString, ideal -> 3));
     @MongoObjectId
-    private String id;
+        private String id;
     private final String reference;
     private State state;
     private final Map<Ideal, Integer> ideals;
