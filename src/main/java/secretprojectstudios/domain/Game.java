@@ -81,6 +81,11 @@ public class Game {
         state = State.Started;
     }
 
+    public void finish() {
+        currentBill = null;
+        state = State.Finished;
+    }
+
     public void applyBill(Bill bill, Vote vote) {
         Map<Ideal, Integer> effect = vote == Vote.Aye ? bill.getPassEffect() : bill.getFailEffect();
 

@@ -37,7 +37,7 @@ public class ClientGameStateRepository {
             playerVotes = playerVoteRepository.getAll(bill.getId());
 
             if (allPlayers.size() == playerVotes.size() && gameRepository.endRound(game)) {
-                Vote winner = playerVotes.stream()
+                Vote billOutcome = playerVotes.stream()
                         .collect(Collectors.groupingBy(PlayerVote::getVote))
                         .entrySet()
                         .stream()
@@ -48,12 +48,23 @@ public class ClientGameStateRepository {
                         .max(Comparator.comparingInt(Map.Entry::getValue))
                         .get()
                         .getKey();
-                game.applyBill(bill, winner);
-                bill = new Bill();
-                billRepository.save(bill);
-                game.setNewBill(bill);
+                game.applyBill(bill, billOutcome);
+                boolean gameWon = false;
+                for (Player playerCheck: allPlayers) {
+                    if (playerCheck.hasWon(game.getIdeals())) {
+                        game.finish();
+                        gameWon = true;
+                        bill = null;
+                        break;
+                    }
+                }
+                if (!gameWon) {
+                    bill = new Bill();
+                    billRepository.save(bill);
+                    game.setNewBill(bill);
+                    playerVotes = null;
+                }
                 gameRepository.save(game);
-                playerVotes = null;
             }
         }
 
