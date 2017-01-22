@@ -27,8 +27,8 @@ public class Bill {
 
     private void generatePassAndFailOutcomes() {
         List<Ideal> ideals = Arrays.asList(Ideal.values());
-        Collections.shuffle(ideals);
         Random random = new Random();
+        Collections.shuffle(ideals, random);
         passEffect = new HashMap<>();
         failEffect = new HashMap<>();
         int [] weights = new int[] {
@@ -39,33 +39,46 @@ public class Bill {
                 randomValue(random),
                 randomValue(random)
         };
+        int from = -1;
         if (random.nextFloat() < 0.25f) {
-            int from = random.nextInt(3);
+            from = random.nextInt(3);
             int to = random.nextInt(3) + 3;
             ideals.set(to, ideals.get(from));
             weights[to] = weights[from] * -1 + random.nextInt(2) - 1;
         } else if (random.nextFloat() < 0.33f) {
-            int from = random.nextInt(3);
+            from = random.nextInt(3);
             int to = random.nextInt(3) + 3;
             ideals.set(to, ideals.get(from));
             weights[to] = weights[from] * -1 + random.nextInt(2) - 1;
         }
         if (random.nextFloat() < 0.1f) {
-            int from = random.nextInt(3);
-            int to = random.nextInt(3) + 3;
-            ideals.set(to, ideals.get(from));
-            weights[to] = weights[from] * -1 + random.nextInt(2) - 1;
+            int from2 = random.nextInt(3);
+            if (from2 != from) {
+                int to = random.nextInt(3) + 3;
+                ideals.set(to, ideals.get(from2));
+                weights[to] = weights[from2] * -1 + random.nextInt(2) - 1;
+            }
         } else if (random.nextFloat() < 0.1f) {
-            int from = random.nextInt(3);
-            int to = random.nextInt(3) + 3;
-            ideals.set(to, ideals.get(from));
-            weights[to] = weights[from] * -1 + random.nextInt(2) - 1;
+            int from2 = random.nextInt(3);
+            if (from2 != from) {
+                int to = random.nextInt(3) + 3;
+                ideals.set(to, ideals.get(from2));
+                weights[to] = weights[from2] * -1 + random.nextInt(2) - 1;
+            }
         }
+        if (random.nextFloat() < 0.7f && weights[0] * weights[1] > 0)
+            weights[1] *= -1;
+        if (random.nextFloat() < 0.7f && weights[1] * weights[2] > 0)
+            weights[2] *= -1;
+        if (random.nextFloat() < 0.7f && weights[3] * weights[4] > 0)
+            weights[4] *= -1;
+        if (random.nextFloat() < 0.7f && weights[4] * weights[5] > 0)
+            weights[5] *= -1;
         for (int i = 0; i < 3; i++) {
             if (weights[i] != 0)
-                passEffect.put(ideals.get(i), weights[i]);
-            if (weights[i] != 0)
-                failEffect.put(ideals.get(i+3), weights[i+3]);
+                passEffect.put(ideals.get(i), Math.max(weights[i], -2));
+            if (weights[i+3] != 0)
+                failEffect.put(ideals.get(i+3), Math.max(weights[i+3], -2));
         }
     }
 
@@ -74,7 +87,7 @@ public class Bill {
     }
 
     private int randomValue(Random random) {
-        int result = random.nextInt(5) - 2;
+        int result = random.nextInt(6) - 2;
         if (result == 0) {
             result = random.nextInt(2) + 1;
         }
