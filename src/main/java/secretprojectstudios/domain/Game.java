@@ -15,7 +15,7 @@ public class Game {
     @MongoObjectId
     private String id;
     private final String reference;
-    private final State state;
+    private State state;
     private final Map<Ideal, Integer> ideals;
     private String currentBill;
     private int round;
@@ -75,5 +75,9 @@ public class Game {
 
     public String getCurrentBill() {
         return currentBill;
+    }
+
+    public void start() {
+        state = State.Started;
     }
 }

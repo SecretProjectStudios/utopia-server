@@ -2,10 +2,8 @@ package secretprojectstudios.resources;
 
 import com.google.inject.Inject;
 import org.apache.commons.lang3.RandomStringUtils;
-import secretprojectstudios.domain.Game;
-import secretprojectstudios.domain.GameState;
-import secretprojectstudios.domain.Player;
-import secretprojectstudios.domain.State;
+import secretprojectstudios.domain.*;
+import secretprojectstudios.repository.BillRepository;
 import secretprojectstudios.repository.GameRepository;
 import secretprojectstudios.repository.PlayerRepository;
 import secretprojectstudios.resources.requests.GameCreateRequest;
@@ -18,11 +16,15 @@ import java.util.List;
 public class GameResource {
     private final GameRepository gameRepository;
     private final PlayerRepository playerRepository;
+    private final BillRepository billRepository;
 
     @Inject
-    public GameResource(GameRepository gameRepository, PlayerRepository playerRepository) {
+    public GameResource(GameRepository gameRepository,
+                        PlayerRepository playerRepository,
+                        BillRepository billRepository) {
         this.gameRepository = gameRepository;
         this.playerRepository = playerRepository;
+        this.billRepository = billRepository;
     }
 
     @POST
@@ -46,7 +48,12 @@ public class GameResource {
     @Path("/{id}/start")
     @Produces(MediaType.APPLICATION_JSON)
     public GameState startGame(@PathParam("id") String id) {
-        Game game = gameRepository.startGame(id);
+        Bill bill = new Bill();
+        billRepository.save(bill);
+        Game game = gameRepository.get(id);
+        game.setNewBill(bill);
+        game.start();
+        game = gameRepository.save(game);
         List<Player> players = playerRepository.getAll(id);
         return new GameState(game.getReference(), players);
     }

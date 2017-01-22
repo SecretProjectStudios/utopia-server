@@ -31,12 +31,6 @@ public class GameRepository {
         return jongo.getCollection(GAMES_COLLECTION).findOne("{ reference: #, state: # }", reference.toUpperCase(), state).as(Game.class);
     }
 
-    public Game startGame(String id) {
-        jongo.getCollection(GAMES_COLLECTION).update(new ObjectId(id))
-                .with("{ $set: { state: # } }", State.Started);
-        return get(id);
-    }
-
     public boolean endRound(Game game) {
         int n = jongo.getCollection(GAMES_COLLECTION)
                 .update("{ _id: #, round: # }", game.getId(), game.getRound())
