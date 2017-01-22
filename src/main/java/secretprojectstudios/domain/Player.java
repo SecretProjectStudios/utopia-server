@@ -52,8 +52,8 @@ public class Player {
     }
 
     public boolean hasWon(Map<Ideal, Integer> ideals) {
-        for (Ideal ideal: Ideal.values()) {
-            if (targets.get(ideal) != null && targets.get(ideal) < ideals.get(ideal)) {
+        for (Ideal ideal: targets.keySet()) {
+            if (targets.get(ideal) < ideals.get(ideal)) {
                 return false;
             }
         }

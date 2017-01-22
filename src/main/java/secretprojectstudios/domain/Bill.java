@@ -31,11 +31,11 @@ public class Bill {
         passEffect = new HashMap<>();
         failEffect = new HashMap<>();
         int [] weights = new int[] {
-                random.nextInt(4),
-                random.nextInt(2) - 2,
                 randomValue(random),
-                random.nextInt(4),
-                random.nextInt(2) - 2,
+                randomValue(random),
+                randomValue(random),
+                randomValue(random),
+                randomValue(random),
                 randomValue(random)
         };
         if (random.nextFloat() < 0.25f) {
@@ -73,7 +73,7 @@ public class Bill {
     }
 
     private int randomValue(Random random) {
-        int result = random.nextInt(6) - 3;
+        int result = random.nextInt(5) - 2;
         if (result == 0) {
             result = random.nextInt(2) + 1;
         }
