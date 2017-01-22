@@ -7,6 +7,7 @@ import org.jongo.marshall.jackson.oid.MongoObjectId;
 import java.util.*;
 
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 public class Bill {
     @MongoObjectId
@@ -81,7 +82,7 @@ public class Bill {
     }
 
     private String generateName() {
-        return String.format("Bill %s.%s", randomAlphanumeric(3), randomAlphanumeric(1));
+        return String.format("Bill #%d", Integer.parseInt(randomNumeric(4)));
     }
 
     public Map<Ideal, Integer> getPassEffect() {
