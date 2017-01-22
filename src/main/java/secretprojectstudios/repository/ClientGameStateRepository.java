@@ -3,7 +3,9 @@ package secretprojectstudios.repository;
 import com.google.inject.Inject;
 import secretprojectstudios.domain.*;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ClientGameStateRepository {
@@ -35,6 +37,18 @@ public class ClientGameStateRepository {
             playerVotes = playerVoteRepository.getAll(bill.getId());
 
             if (allPlayers.size() == playerVotes.size() && gameRepository.endRound(game)) {
+                Vote winner = playerVotes.stream()
+                        .collect(Collectors.groupingBy(PlayerVote::getVote))
+                        .entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().size()))
+                        .entrySet()
+                        .stream()
+                        .sorted(Comparator.comparingInt(e -> e.getKey().ordinal()))
+                        .max(Comparator.comparingInt(Map.Entry::getValue))
+                        .get()
+                        .getKey();
+                game.applyBill(bill, winner);
                 bill = new Bill();
                 billRepository.save(bill);
                 game.setNewBill(bill);
@@ -42,7 +56,6 @@ public class ClientGameStateRepository {
                 playerVotes = null;
             }
         }
-
 
         final List<PlayerVote> finalVotes = playerVotes;
         List<SimplePlayer> simplePlayers = allPlayers.stream()

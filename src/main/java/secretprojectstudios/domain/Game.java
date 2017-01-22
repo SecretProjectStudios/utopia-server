@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toMap;
 public class Game {
     private static final Map<String, Integer> DEFAULT_IDEALS = Arrays.stream(Ideal.values()).collect(toMap(Enum::toString, ideal -> 3));
     @MongoObjectId
-        private String id;
+    private String id;
     private final String reference;
     private State state;
     private final Map<Ideal, Integer> ideals;
@@ -79,5 +79,13 @@ public class Game {
 
     public void start() {
         state = State.Started;
+    }
+
+    public void applyBill(Bill bill, Vote vote) {
+        Map<Ideal, Integer> effect = vote == Vote.Aye ? bill.getPassEffect() : bill.getFailEffect();
+
+        for (Map.Entry<Ideal, Integer> entry : effect.entrySet()) {
+            ideals.compute(entry.getKey(), (ideal, value) -> value + entry.getValue());
+        }
     }
 }

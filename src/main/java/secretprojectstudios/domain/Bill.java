@@ -83,4 +83,12 @@ public class Bill {
     private String generateName() {
         return String.format("Bill %s.%s", randomAlphanumeric(3), randomAlphanumeric(1));
     }
+
+    public Map<Ideal, Integer> getPassEffect() {
+        return passEffect;
+    }
+
+    public Map<Ideal, Integer> getFailEffect() {
+        return failEffect;
+    }
 }
