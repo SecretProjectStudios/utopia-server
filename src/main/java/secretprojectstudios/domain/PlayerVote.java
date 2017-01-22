@@ -40,4 +40,8 @@ public class PlayerVote {
     public Vote getVote() {
         return vote;
     }
+
+    public String getBillId() {
+        return billId;
+    }
 }

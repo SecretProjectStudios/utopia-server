@@ -81,11 +81,16 @@ public class Game {
         state = State.Started;
     }
 
+    public void finish() {
+        currentBill = null;
+        state = State.Finished;
+    }
+
     public void applyBill(Bill bill, Vote vote) {
         Map<Ideal, Integer> effect = vote == Vote.Aye ? bill.getPassEffect() : bill.getFailEffect();
 
         for (Map.Entry<Ideal, Integer> entry : effect.entrySet()) {
-            ideals.compute(entry.getKey(), (ideal, value) -> value + entry.getValue());
+            ideals.compute(entry.getKey(), (ideal, value) -> Math.max(0, Math.min(value + entry.getValue(), 10)));
         }
     }
 }

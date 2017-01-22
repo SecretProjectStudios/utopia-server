@@ -2,6 +2,7 @@ package secretprojectstudios.repository;
 
 import com.google.inject.Inject;
 import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 import org.jongo.MongoCursor;
 import secretprojectstudios.domain.PlayerVote;
 
@@ -23,7 +24,9 @@ public class PlayerVoteRepository {
     }
 
     public PlayerVote add(PlayerVote playerVote) {
-        jongo.getCollection(PLAYER_VOTES_COLLECTION).save(playerVote);
+        MongoCollection collection = jongo.getCollection(PLAYER_VOTES_COLLECTION);
+        if (collection.count("{ playerId: #, billId: # }", playerVote.getPlayerId(), playerVote.getBillId()) == 0)
+            collection.save(playerVote);
         return playerVote;
     }
 
